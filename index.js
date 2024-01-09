@@ -53,6 +53,13 @@ app.delete("/api/persons/:id", (request, response) => {
 app.post("/api/persons", (request, response) => {
   const person = request.body;
 
+  if (!person.name || !person.number) {
+    return response.status(400).json({ error: "name and number is required" });
+  }
+  if (data.find((p) => p.name == person.name)) {
+    return response.status(400).json({ error: "name must be unique" });
+  }
+
   person.id = getRandomInt();
 
   data = data.concat(person);
