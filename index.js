@@ -29,8 +29,33 @@ let data = [
   },
 ];
 
-app.use(morgan());
 app.use(express.json());
+app.use(
+  morgan(function (tokens, req, res) {
+    if (req.method === "POST") {
+      return [
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.res(req, res, "content-length"),
+        "-",
+        tokens["response-time"](req, res),
+        "ms",
+        JSON.stringify({ name: req.body.name, number: req.body.number }),
+      ].join(" ");
+    }
+
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, "content-length"),
+      "-",
+      tokens["response-time"](req, res),
+      "ms",
+    ].join(" ");
+  })
+);
 
 app.get("/api/persons", (request, response) => {
   response.json(data);
