@@ -30,6 +30,15 @@ app.get("/api/persons", (request, response) => {
   response.json(data);
 });
 
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const person = data.find((p) => p.id === id);
+  if (person) {
+    return response.json(person);
+  }
+  response.sendStatus(404);
+});
+
 app.get("/info", (request, response) => {
   const date = new Date().toString();
   const html = `
