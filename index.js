@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
 
 function getRandomInt() {
   return Math.floor(Math.random() * 666666);
@@ -28,6 +29,7 @@ let data = [
   },
 ];
 
+app.use(morgan());
 app.use(express.json());
 
 app.get("/api/persons", (request, response) => {
